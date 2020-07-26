@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +11,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  
+  constructor(private formbuilder: FormBuilder,private service: AuthService, private route: Router){}
+
+  login: FormGroup;
+  submit:boolean= false;
+
+
+  public errCallBack= (errRes: HttpErrorResponse)=>{
+    if(errRes.error instanceof Error){
+      alert('Error! Client Side Error getting');
+    }
+    else{
+      alert('Error! Client Side Error getting');
+    }
+  }
 
   ngOnInit(): void {
+    this.login= this.formbuilder.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+    })
+  }
+  get f() { return this.login.controls; }
+
+
+  onSubmit(){
+    console.log()
+    this.submit = true;
+    if (this.login.invalid) {
+        return;
+    }
+    console.log(this.login.value)
+    this.service.login(this.login.value).subscribe(res=>{
+      alert('your login sucessfully')
+      this.route.navigate(['E/inbox'])
+    },this.errCallBack)
   }
 
 }

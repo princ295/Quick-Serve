@@ -1,0 +1,13 @@
+
+<table class="table">
+    <tbody>
+      <tr *ngFor="let i of info">
+        <div [ngClass]="{ 'unseen': i.status === 'unseen', 'seen':i.country === 'seen' }" (click)="getId(i)">
+          <td >{{i.title}}</td>
+          <td>{{i.body}} </td>
+          <td>10:30 PM</td>
+        </div>
+      </tr>
+  
+    </tbody>
+</table>
